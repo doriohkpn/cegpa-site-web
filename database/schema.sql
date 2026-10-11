@@ -3,9 +3,6 @@
 -- Fichier: database/schema.sql
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS `cegpa_db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `cegpa_db`;
-
 -- ------------------------------------------------------------
 -- Table: admin_users (Gestion des administrateurs)
 -- ------------------------------------------------------------

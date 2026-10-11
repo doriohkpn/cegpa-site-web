@@ -1,0 +1,18 @@
+# .htaccess - Redirection SPA React pour Apache & Préservation de l'API PHP
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Laisser passer les requêtes vers l'API PHP sans les intercepter
+  RewriteCond %{REQUEST_URI} ^/api/ [NC]
+  RewriteRule .* - [L]
+
+  # Pour tous les autres fichiers/dossiers réels existants, ne pas réécrire
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Rediriger toutes les routes frontend (ex: /exposition, /admin, etc.) vers index.html
+  RewriteRule . /index.html [L]
+</IfModule>

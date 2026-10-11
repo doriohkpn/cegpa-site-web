@@ -2,18 +2,11 @@
 // api/config/database.php - Connexion PDO à la base de données MySQL CeGPA
 
 class Database {
-    private $host;
-    private $db_name;
-    private $username;
-    private $password;
+    private $host = "sql200.infinityfree.com";
+    private $db_name = "if0_43149450_cegpa";
+    private $username = "if0_43149450";
+    private $password = "Jesugnon2002";
     public $conn;
-
-    public function __construct() {
-        $this->host = getenv('DB_HOST') ?: "localhost";
-        $this->db_name = getenv('DB_NAME') ?: "cegpa_db";
-        $this->username = getenv('DB_USER') ?: "root";
-        $this->password = getenv('DB_PASS') !== false ? getenv('DB_PASS') : "";
-    }
 
     public function getConnection() {
         $this->conn = null;
