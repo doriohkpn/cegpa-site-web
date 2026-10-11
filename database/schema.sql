@@ -100,25 +100,31 @@ ON DUPLICATE KEY UPDATE `id`=`id`;
 
 -- Visites virtuelles
 INSERT INTO `visites_virtuelles` (`id`, `title`, `url`, `embed_url`, `description`) VALUES
-(1, 'Espace d\'Exposition Principal CeGPA 3D', 'https://my.matterport.com/show/?m=sample1', 'https://my.matterport.com/show/?m=sample1', 'Visite immersive à 360° du grand hall d\'exposition contemporaine.'),
-(2, 'Pavillon des Sculptures et Bronzes', 'https://my.matterport.com/show/?m=sample2', 'https://my.matterport.com/show/?m=sample2', 'Découvrez la collection permanente de bronzes et sculptures africaines.');
+(1, 'Visite Virtuelle - La Jeunesse Africaine', 'https://visite.art-africain-virtuel.bj/jeunesse-africaine/', 'https://visite.art-africain-virtuel.bj/jeunesse-africaine/', 'Visite immersive 360° de l\'exposition La Jeunesse Africaine dans la Société.'),
+(2, 'Visite Virtuelle - Héritage & Métamorphoses', 'https://visite.art-africain-virtuel.bj/heritage-metamorphoses/', 'https://visite.art-africain-virtuel.bj/heritage-metamorphoses/', 'Visite immersive 360° de l\'exposition Héritage & Métamorphoses.');
 
--- Expositions
-INSERT INTO `expositions` (`id`, `title`, `date_range`, `summary`, `description`, `image_url`, `visite_virtuelle_id`, `status`) VALUES
-(1, 'Mémoires Subtiles & Formes Contemporaines', '12 Février - 30 Avril 2026', 'Une immersion totale dans la rencontre entre traditions plastiques et expressions contemporaines.', 'Cette exposition majeure rassemble les œuvres de plasticiens de renom autour du thème des mémoires visuelles. À travers l\'usage de pigments naturels, de pièces métalliques réemployées et de sculptures monumentales, les artistes explorent la frontière entre passé et avenir.', 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=800&q=80', 1, 'en_cours'),
-(2, 'Lumières du Patrimoine et Échos du Temps', '15 Mai - 10 Juillet 2026', 'Exploration photographique et picturale des paysages sacrés et monuments patrimoniaux.', 'Une sélection captivante d\'œuvres photographiques et de toiles acryliques mettant en valeur la beauté architecturale et la mémoire des lieux historiques.', 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800&q=80', 2, 'a_venir');
+-- Expositions officielles CeGPA
+INSERT INTO `expositions` (`id`, `title`, `date_range`, `summary`, `description`, `image_url`, `visite_virtuelle_id`, `status`, `in_active_list`, `is_public`) VALUES
+(1, 'La Jeunesse Africaine dans la Société', 'du 15/10/2026 au 15/01/2027', 'L\'exposition « La Jeunesse Africaine dans la Société » célèbre une jeunesse africaine consciente de ses responsabilités, fière de ses héritages et résolument tournée vers l\'avenir.', 'À travers un ensemble d\'œuvres figuratives majeures spécialement conçues pour cet événement, le parcours explore quatre piliers essentiels : l\'affirmation de soi, l\'ancrage spirituel, le dynamisme économique des marchés populaires et la liberté d\'expression citoyenne.', '/assets/images/expo_jeunesse_africaine.jpg', 1, 'en_cours', 1, 1),
+(2, 'Héritage & Métamorphoses', 'du 15/10/2026 au 15/01/2027', 'L\'exposition « Héritage & Métamorphoses : Tradition et Modernité dans l\'Art Africain » propose un dialogue plastique inédit entre la peinture de Koffi Mensah et les sculptures d\'Ayaba Zinsou.', 'Une immersion sensorielle au croisement des mémoires ancestrales et des mutations contemporaines, interrogeant la place des mythes fondateurs face à l\'accélération du XXIe siècle.', '/assets/images/expo_heritage_metamorphoses.jpg', 2, 'en_cours', 1, 1);
 
--- Artistes
+-- Artistes officiels
 INSERT INTO `artistes` (`id`, `first_name`, `last_name`, `profession`, `bio`, `photo_url`) VALUES
-(1, 'Kofi', 'Aziagbe', 'Peintre & Plasticien', 'Kofi Aziagbe est un artiste plasticien contemporain reconnu pour son travail sur les textures mixtes, la matière brute et les couleurs ocre emblématiques.', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80'),
-(2, 'Abla', 'Sessi', 'Sculptrice & Designeuse', 'Pionnière de la sculpture métallique recyclée, Abla Sessi transforme l\'acier et le bronze en silhouettes fluides évoquant le mouvement et la danse.', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80'),
-(3, 'Dossa', 'Gbaguidi', 'Photographe d\'Art', 'Photographe spécialisé dans le patrimoine architectural et les portraits studio à la lumière naturelle.', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80');
+(1, 'Amina', 'DOSSA', 'Artiste Peintre', 'Artiste peintre béninoise diplômée de l\'École Nationale Supérieure d\'Art de Porto-Novo, réputée pour ses portraits vibrants célébrant la résilience et l\'élan vital des jeunes générations.', '/assets/images/amina_dossa.jpg'),
+(2, 'Sèdjro', 'ADANHO', 'Artiste Peintre & Plasticien', 'Peintre plasticien explorant la transmission intergénérationnelle, les mémoires spirituelles et le respect des valeurs communautaires africaines.', '/assets/images/sedjro_adanho.jpg'),
+(3, 'Naïma', 'SOGLO', 'Artiste Plasticienne & Coloriste', 'Plasticienne renommée capturant l\'effervescence économique, la solidarité et la vitalité des marchés populaires d\'Afrique de l\'Ouest.', '/assets/images/naima_soglo.jpg'),
+(4, 'Malik', 'GBAGUIDI', 'Artiste Peintre Expressionniste', 'Peintre expressionniste abordant les thèmes de l\'engagement citoyen, de la poésie urbaine et de la liberté d\'expression.', '/assets/images/malik_gbaguidi.jpg'),
+(5, 'Koffi', 'MENSAH', 'Artiste Peintre & Plasticien', 'Peintre explorant la rencontre plastique entre les symboles royaux du Danxomè et les paysages urbains électriques.', '/assets/images/koffi_mensah.jpg'),
+(6, 'Ayaba', 'ZINSOU', 'Sculptrice & Plasticienne', 'Sculptrice sur bronze et ébène, réinterprétant les canons sacrés de la statuaire ancestrale dans une épure moderniste saisissante.', '/assets/images/ayaba_zinsou.jpg');
 
 -- Associations Exposition <-> Artiste
 INSERT INTO `exposition_artiste` (`exposition_id`, `artiste_id`, `role`) VALUES
-(1, 1, 'Peintre principal'),
-(1, 2, 'Sculptrice invitée'),
-(2, 3, 'Photographe d\'exposition');
+(1, 1, 'Artiste Peintre'),
+(1, 2, 'Peintre & Plasticien'),
+(1, 3, 'Plasticienne & Coloriste'),
+(1, 4, 'Peintre Expressionniste'),
+(2, 5, 'Peintre & Plasticien'),
+(2, 6, 'Sculptrice & Plasticienne');
 
 -- Messages de contact exemple
 INSERT INTO `messages_contact` (`full_name`, `email`, `subject`, `message`, `is_read`) VALUES
