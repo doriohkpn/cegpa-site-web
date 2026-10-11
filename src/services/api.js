@@ -2,33 +2,32 @@
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
-export const DATA_VERSION = 'cegpa_v6_clean_two_official';
+export const DATA_VERSION = 'cegpa_v7_dynamic_official';
 
-// Purge automatique et synchronisation immédiate des 2 expositions officielles CeGPA
+// Purge automatique ciblée uniquement des anciens placeholders factices CeGPA
 if (typeof window !== 'undefined' && window.localStorage) {
-  const currentVersion = localStorage.getItem('cegpa_data_version');
   const rawExpos = localStorage.getItem('cegpa_expositions');
-  let isLegacy = currentVersion !== DATA_VERSION;
-  if (!isLegacy && rawExpos) {
+  let hasLegacyPlaceholders = false;
+  if (rawExpos) {
     try {
       const parsed = JSON.parse(rawExpos);
       if (Array.isArray(parsed)) {
-        if (parsed.length > 2 || parsed.some(e => e.title && (e.title.includes('Mémoire des Racines') || e.title.includes('Lumière des Ombres')))) {
-          isLegacy = true;
+        if (parsed.some(e => e.title && (e.title.includes('Mémoire des Racines') || e.title.includes('Lumière des Ombres')))) {
+          hasLegacyPlaceholders = true;
         }
       }
     } catch (_) {
-      isLegacy = true;
+      hasLegacyPlaceholders = true;
     }
   }
 
-  if (isLegacy) {
+  if (hasLegacyPlaceholders) {
     localStorage.removeItem('cegpa_expositions');
     localStorage.removeItem('cegpa_current_expo');
     localStorage.removeItem('cegpa_artistes');
     localStorage.removeItem('cegpa_visites');
-    localStorage.setItem('cegpa_data_version', DATA_VERSION);
   }
+  localStorage.setItem('cegpa_data_version', DATA_VERSION);
 }
 
 // Helper Fetch générique avec gestion d'erreurs et jeton Admin
@@ -377,7 +376,7 @@ export const artistesAPI = {
     if (local) {
       try {
         const parsed = JSON.parse(local);
-        if (Array.isArray(parsed) && parsed.length <= 6 && !parsed.some(a => (a.nom === 'HOUNKPATIN' || a.name === 'Aïcha HOUNKPATIN'))) {
+        if (Array.isArray(parsed) && !parsed.some(a => (a.nom === 'HOUNKPATIN' || a.name === 'Aïcha HOUNKPATIN'))) {
           const updated = parsed.map(enrichArtistBio);
           localStorage.setItem('cegpa_artistes', JSON.stringify(updated));
           return updated;
@@ -559,30 +558,6 @@ export function safeSetItem(key, value) {
 
 export const expositionsAPI = {
   getAll: async () => {
-    // Nettoyage immédiat du cache localStorage si ancienne version ou données obsolètes détectées
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const currentVersion = localStorage.getItem('cegpa_data_version');
-      const rawExpos = localStorage.getItem('cegpa_expositions');
-      let isLegacy = currentVersion !== DATA_VERSION;
-      if (!isLegacy && rawExpos) {
-        try {
-          const parsed = JSON.parse(rawExpos);
-          if (Array.isArray(parsed) && (parsed.length > 2 || parsed.some(e => e.title && (e.title.includes('Mémoire des Racines') || e.title.includes('Lumière des Ombres'))))) {
-            isLegacy = true;
-          }
-        } catch (_) {
-          isLegacy = true;
-        }
-      }
-      if (isLegacy) {
-        localStorage.removeItem('cegpa_expositions');
-        localStorage.removeItem('cegpa_current_expo');
-        localStorage.removeItem('cegpa_artistes');
-        localStorage.removeItem('cegpa_visites');
-        localStorage.setItem('cegpa_data_version', DATA_VERSION);
-      }
-    }
-
     try {
       const res = await request('/expositions/index.php');
       if (res && res.success && Array.isArray(res.data)) {
@@ -610,7 +585,7 @@ export const expositionsAPI = {
     if (local !== null) {
       try {
         const parsed = JSON.parse(local);
-        if (Array.isArray(parsed) && parsed.length <= 2 && !parsed.some(e => e.title && (e.title.includes('Mémoire des Racines') || e.title.includes('Lumière des Ombres')))) {
+        if (Array.isArray(parsed) && !parsed.some(e => e.title && (e.title.includes('Mémoire des Racines') || e.title.includes('Lumière des Ombres')))) {
           return parsed.map((e, i) => ({
             ...e,
             numero: e.numero !== undefined ? e.numero : (typeof e.id === 'number' && e.id < 100000 ? e.id : (i + 1))

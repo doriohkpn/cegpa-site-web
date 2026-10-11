@@ -5,7 +5,7 @@ import ExpositionList, { getExpoStatus, formatExpoDateRange, formatDateFR } from
 import ExpositionForm from './ExpositionForm';
 
 // Helper pour compresser les images uploadées (évite d'exploser le quota localStorage)
-async function compressImageFile(file, maxWidth = 1200, quality = 0.75) {
+async function compressImageFile(file, maxWidth = 800, quality = 0.7) {
   if (!file || !(file instanceof File)) return null;
   return new Promise((resolve) => {
     const reader = new FileReader();

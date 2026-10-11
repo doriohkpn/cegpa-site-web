@@ -3,33 +3,32 @@ import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
 
-// Purge automatique et synchronisation immédiate des 2 expositions officielles CeGPA
+// Purge automatique ciblée uniquement des anciens placeholders factices CeGPA
 (function syncOfficialCeGPAData() {
   if (typeof window === 'undefined' || !window.localStorage) return;
-  const DATA_VERSION = 'cegpa_v6_clean_two_official';
-  const currentVersion = localStorage.getItem('cegpa_data_version');
+  const DATA_VERSION = 'cegpa_v7_dynamic_official';
   const rawExpos = localStorage.getItem('cegpa_expositions');
-  let isLegacy = currentVersion !== DATA_VERSION;
-  if (!isLegacy && rawExpos) {
+  let hasLegacyPlaceholders = false;
+  if (rawExpos) {
     try {
       const parsed = JSON.parse(rawExpos);
       if (Array.isArray(parsed)) {
-        if (parsed.length > 2 || parsed.some(e => e.title && (e.title.includes('Mémoire des Racines') || e.title.includes('Lumière des Ombres')))) {
-          isLegacy = true;
+        if (parsed.some(e => e.title && (e.title.includes('Mémoire des Racines') || e.title.includes('Lumière des Ombres')))) {
+          hasLegacyPlaceholders = true;
         }
       }
     } catch (_) {
-      isLegacy = true;
+      hasLegacyPlaceholders = true;
     }
   }
 
-  if (isLegacy) {
+  if (hasLegacyPlaceholders) {
     localStorage.removeItem('cegpa_expositions');
     localStorage.removeItem('cegpa_current_expo');
     localStorage.removeItem('cegpa_artistes');
     localStorage.removeItem('cegpa_visites');
-    localStorage.setItem('cegpa_data_version', DATA_VERSION);
   }
+  localStorage.setItem('cegpa_data_version', DATA_VERSION);
 })();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
